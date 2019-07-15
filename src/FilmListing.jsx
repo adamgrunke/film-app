@@ -37,8 +37,14 @@ class FilmListing extends React.Component {
         let fave;
         const filmsToDisplay = this.state.filter === 'all' ? this.props.films : this.state.faves;
         const allFilms = filmsToDisplay.map( (film, index) => {
+            if (this.state.faves.includes(film)) {
+                fave = true
+            } else {
+                fave = false
+            }
             return(
                 <FilmRow film={film} 
+                            isFave={fave}
                             key={index} 
                             handleDetailsClick={this.props.handleDetailsClick}
                             handleFaveToggle={this.handleFaveToggle} />
@@ -48,8 +54,16 @@ class FilmListing extends React.Component {
             <div className='film-list'>
                 <h1 className='section-title'>FILMS</h1>
                 <div className='film-list-filters'>
-                    <div onClick={() => this.handleFilterClick('all')} className='film-list-filter'>ALL</div>
-                    <div onClick={() => this.handleFilterClick('faves')} className='film-list-filter'>FAVES</div>
+                    <div onClick={() => this.handleFilterClick('all')} 
+                        className={this.state.filter === 'all' ? 'film-list-filter is-active' : 'film-list-filter'}>
+                        ALL
+                        <span className='section-count'>{this.props.films.length}</span>
+                    </div>
+                    <div onClick={() => this.handleFilterClick('faves')} 
+                        className={this.state.filter === 'faves' ? 'film-list-filter is-active' : 'film-list-filter'}>
+                        FAVES
+                        <span className='section-count'>{this.state.faves.length}</span>
+                    </div>
                 </div>
                 {allFilms}
             </div>
